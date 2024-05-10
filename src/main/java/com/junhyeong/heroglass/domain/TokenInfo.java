@@ -1,4 +1,4 @@
-package com.junhyeong.heroglass.entity;
+package com.junhyeong.heroglass.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
