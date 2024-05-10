@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -52,10 +53,12 @@ public class UserService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(signinRequest.email(), signinRequest.password()));
 
-            AppUser findUser = userRepository.findByUsername(signinRequest.email());
+            AppUser findUser = userRepository.findByEmail(signinRequest.email());
 
             TokenResponse tokenResponse = jwtTokenProvider.generateToken(signinRequest.email(),
                     Collections.singleton(findUser.getUserRole()));
+            log.info(findUser.getEmail());
+            log.info(findUser.getPassword());
 
             findUser.update(tokenResponse.tokenInfo().getAccessToken(), tokenResponse.tokenInfo().getRefreshToken());
 
@@ -67,18 +70,12 @@ public class UserService {
         }
     }
 
-    public TokenResponse signup(SignupRequest signupRequest) throws Exception {
-
-        TokenResponse tokenResponse = jwtTokenProvider.generateToken(signupRequest.name(),
-                Collections.singleton(signupRequest.role()));
+    public AppUser signup(SignupRequest signupRequest) throws Exception {
 
         if (!userRepository.existsByEmail(signupRequest.email())) {
-
             AppUser user = new AppUser(signupRequest.name(), signupRequest.email(),
-                    passwordEncoder.encode(signupRequest.password()), signupRequest.role(),
-                    tokenResponse.tokenInfo().getAccessToken(), tokenResponse.tokenInfo().getRefreshToken());
-            userRepository.save(user);
-            return tokenResponse;
+                    passwordEncoder.encode(signupRequest.password()), signupRequest.role());
+            return userRepository.save(user);
         } else {
             throw new CustomException("useremail is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }

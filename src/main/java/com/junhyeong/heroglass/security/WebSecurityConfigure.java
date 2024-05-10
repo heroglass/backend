@@ -8,6 +8,7 @@ import com.junhyeong.heroglass.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
+@Slf4j
 public class WebSecurityConfigure {
 
     @Autowired
@@ -42,13 +44,13 @@ public class WebSecurityConfigure {
         return new AuthenticationManager() {
             @Override
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                String username = authentication.getName();
+                String email = authentication.getName();
                 String password = authentication.getCredentials().toString();
 
-                AppUser user = userRepository.findByUsername(username);
+                AppUser user = userRepository.findByEmail(email);
 
                 if (passwordEncoder().matches(password, user.getPassword())) {
-                    return new UsernamePasswordAuthenticationToken(username, password);
+                    return new UsernamePasswordAuthenticationToken(email, password);
                 } else {
                     throw new AuthenticationException("Invalid username/password supplied") {
                     };
@@ -88,8 +90,8 @@ public class WebSecurityConfigure {
                                 .requestMatchers("/metrics/*").permitAll()
                                 .requestMatchers("/actuator/*").permitAll()
                                 .requestMatchers("/h2-console/*").permitAll()
-                                .requestMatchers("api/v1/signin").permitAll()
-                                .requestMatchers("api/v1/signup").permitAll()
+                                .requestMatchers("/api/v1/signin").permitAll()
+                                .requestMatchers("/api/v1/signup").permitAll()
                                 .anyRequest().authenticated()
                 ).addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);

@@ -29,13 +29,11 @@ public class AppUser {
     private String refreshToken;
 
 
-    public AppUser(String name, String email, String encode, UserRole role, String accessToken, String refreshToken) {
+    public AppUser(String name, String email, String encode, UserRole role) {
         this.username = name;
         this.email = email;
         this.password = encode;
         this.userRole = role;
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 
     public void update(String accessToken, String refreshToken) {

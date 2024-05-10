@@ -29,6 +29,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             jakarta.servlet.FilterChain chain) throws jakarta.servlet.ServletException, IOException {
 
+        // 로그인 및 회원가입 경로 정의
+        String requestURI = request.getRequestURI();
+
+        // 로그인과 회원가입 요청 시 JWT 검증을 건너뜁니다.
+        if ("/api/v1/signin".equals(requestURI) || "/api/v1/signup".equals(requestURI)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
