@@ -4,7 +4,13 @@ import com.junhyeong.heroglass.domain.AppUser;
 import com.junhyeong.heroglass.domain.TokenInfo;
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
+import com.junhyeong.heroglass.dto.SignupRequest;
+import com.junhyeong.heroglass.dto.TokenResponse;
 import com.junhyeong.heroglass.exception.CustomException;
+import com.junhyeong.heroglass.jwt.JwtTokenProvider;
+import com.junhyeong.heroglass.repository.UserRepository;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import java.security.Key;
@@ -40,13 +46,6 @@ public class UserService {
     }
 
 
-    public String refresh(String remoteUser) {
-        return "";
-    }
-
-    public void delete(String username) {
-    }
-
     @Transactional
     public SigninResponse signin(SigninRequest signinRequest) {
         try {
@@ -55,12 +54,12 @@ public class UserService {
 
             AppUser findUser = userRepository.findByUsername(signinRequest.email());
 
-            TokenInfo tokenInfo = jwtTokenProvider.generateToken(signinRequest.email(),
-                    Collections.singleton(findUser.getUserRole());
+            TokenResponse tokenResponse = jwtTokenProvider.generateToken(signinRequest.email(),
+                    Collections.singleton(findUser.getUserRole()));
 
-            findUser.update(tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
+            findUser.update(tokenResponse.tokenInfo().getAccessToken(), tokenResponse.tokenInfo().getRefreshToken());
 
-            return new SigninResponse(findUser.getId(), tokenInfo);
+            return new SigninResponse(findUser.getId(), tokenResponse.tokenInfo());
 
 
         } catch (AuthenticationException e) {
@@ -68,52 +67,21 @@ public class UserService {
         }
     }
 
-    public TokenInfo signup(UserDataDTO userDataDTO) throws Exception {
+    public TokenResponse signup(SignupRequest signupRequest) throws Exception {
 
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(userDataDTO.getName(),
-                Collections.singleton(userDataDTO.getRole()));
+        TokenResponse tokenResponse = jwtTokenProvider.generateToken(signupRequest.name(),
+                Collections.singleton(signupRequest.role()));
 
-        if (!userRepository.existsByEmail(userDataDTO.getEmail())) {
-            Location companyLocation = geocodingService.getAddressCoordinates(userDataDTO.getCompanyAddress());
+        if (!userRepository.existsByEmail(signupRequest.email())) {
 
-            System.out.println(userDataDTO.getName());
-            AppUser user = new AppUser(userDataDTO.getName(), userDataDTO.getEmail(),
-                    passwordEncoder.encode(userDataDTO.getPassword()), userDataDTO.getRole(),
-                    tokenInfo.getAccessToken(), tokenInfo.getRefreshToken(),
-                    userDataDTO.getCompanyName(), companyLocation);
-
+            AppUser user = new AppUser(signupRequest.name(), signupRequest.email(),
+                    passwordEncoder.encode(signupRequest.password()), signupRequest.role(),
+                    tokenResponse.tokenInfo().getAccessToken(), tokenResponse.tokenInfo().getRefreshToken());
             userRepository.save(user);
-
-            return tokenInfo;
+            return tokenResponse;
         } else {
-            throw new CustomException("Useremail is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException("useremail is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-    }
-
-    @Transactional
-    public void logout(HttpServletRequest request) {
-
-        String accessToken = jwtTokenProvider.resolveToken(request);
-        //Access Token 검증
-        if (!jwtTokenProvider.validateToken(accessToken)) {
-        }
-
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(accessToken)
-                .getBody();
-
-        String userEmail = claims.getSubject();
-        long time = claims.getExpiration().getTime() - System.currentTimeMillis();
-
-        //Access Token blacklist에 등록하여 만료시키기
-        //해당 엑세스 토큰의 남은 유효시간을 얻음
-        redisUtils.setBlackList(accessToken, userEmail, time);
-        //DB에 저장된 Refresh Token 제거
-//        refreshTokenRepository.deleteById(userEmail);
-
-        AppUser findUser = userRepository.findByUsername(userEmail);
-        findUser.updateRefreshToken(null);
     }
 
     public AppUser loadUserByUsername(String username) {

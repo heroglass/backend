@@ -1,6 +1,10 @@
 package com.junhyeong.heroglass.security;
 
 
+import com.junhyeong.heroglass.domain.AppUser;
+import com.junhyeong.heroglass.jwt.JwtAuthenticationFilter;
+import com.junhyeong.heroglass.jwt.JwtTokenProvider;
+import com.junhyeong.heroglass.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +84,6 @@ public class WebSecurityConfigure {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                                 .requestMatchers("/*").permitAll()
                                 .requestMatchers("/metrics/*").permitAll()
                                 .requestMatchers("/actuator/*").permitAll()
