@@ -1,5 +1,6 @@
 package com.junhyeong.heroglass.controller;
 
+import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
 import com.junhyeong.heroglass.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("api/v1/signin")
-    public SigninResponse login(@RequestBody UserSigninDTO userSigninDTO) {
-        return userService.signin(userSigninDTO);
+    public SigninResponse login(@RequestBody SigninRequest signinRequest) {
+        return userService.signin(signinRequest);
     }
 
     @PostMapping("api/v1/signup")
