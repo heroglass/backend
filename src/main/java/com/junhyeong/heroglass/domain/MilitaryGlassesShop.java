@@ -5,10 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Entity
+@Getter
 public class MilitaryGlassesShop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

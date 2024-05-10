@@ -22,12 +22,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("api/v1/signin")
+    @PostMapping("/api/v1/signin")
     public SigninResponse login(@RequestBody SigninRequest signinRequest) {
         return userService.signin(signinRequest);
     }
 
-    @PostMapping("api/v1/signup")
+    @PostMapping("/api/v1/signup")
     public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest) throws Exception {
 
         try {
