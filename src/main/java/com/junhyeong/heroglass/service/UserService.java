@@ -1,5 +1,10 @@
 package com.junhyeong.heroglass.service;
 
+import com.junhyeong.heroglass.domain.AppUser;
+import com.junhyeong.heroglass.domain.TokenInfo;
+import com.junhyeong.heroglass.dto.SigninRequest;
+import com.junhyeong.heroglass.dto.SigninResponse;
+import com.junhyeong.heroglass.exception.CustomException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import java.security.Key;
@@ -43,20 +48,19 @@ public class UserService {
     }
 
     @Transactional
-    public SigninResponseDTO signin(UserSigninDTO userSigninDTO) {
+    public SigninResponse signin(SigninRequest signinRequest) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userSigninDTO.getEmail(), userSigninDTO.getPassword()));
+                    new UsernamePasswordAuthenticationToken(signinRequest.email(), signinRequest.password()));
 
-            AppUser findUser = userRepository.findByUsername(userSigninDTO.getEmail());
+            AppUser findUser = userRepository.findByUsername(signinRequest.email());
 
-            TokenInfo tokenInfo = jwtTokenProvider.generateToken(userSigninDTO.getEmail(),
-                    Collections.singleton(findUser.getUserRole()));
+            TokenInfo tokenInfo = jwtTokenProvider.generateToken(signinRequest.email(),
+                    Collections.singleton(findUser.getUserRole());
 
             findUser.update(tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
 
-            return new SigninResponseDTO(findUser.getId(), findUser.getCompanyName(), findUser.getCompanyAddress(),
-                    tokenInfo);
+            return new SigninResponse(findUser.getId(), tokenInfo);
 
 
         } catch (AuthenticationException e) {

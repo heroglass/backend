@@ -3,6 +3,7 @@ package com.junhyeong.heroglass.controller;
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
 import com.junhyeong.heroglass.domain.TokenInfo;
+import com.junhyeong.heroglass.dto.SignupRequest;
 import com.junhyeong.heroglass.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping("api/v1/signup")
-    public TokenInfo signup(@RequestBody UserDataDTO userDataDTO) throws Exception {
-        return userService.signup(userDataDTO);
+    public TokenInfo signup(@RequestBody SignupRequest signupRequest) throws Exception {
+        return userService.signup(signupRequest);
     }
 
 

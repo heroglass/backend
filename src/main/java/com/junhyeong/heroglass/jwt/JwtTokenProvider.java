@@ -1,6 +1,16 @@
 package com.junhyeong.heroglass.jwt;
 
 
+import com.junhyeong.heroglass.domain.TokenInfo;
+import com.junhyeong.heroglass.dto.TokenResponse;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,13 +52,13 @@ public class JwtTokenProvider {
     }
 
     //Authentication 을 가지고 AccessToken, RefreshToken 을 생성하는 메서드
-    public UserResponseDTO.TokenInfo generateToken(Authentication authentication) {
+    public TokenResponse generateToken(Authentication authentication) {
         return generateToken(authentication.getName(), authentication.getAuthorities());
     }
 
     //name, authorities 를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
-    public UserResponseDTO.TokenInfo generateToken(String name,
-                                                   Collection<? extends GrantedAuthority> inputAuthorities) {
+    public TokenResponse generateToken(String name,
+                                       Collection<? extends GrantedAuthority> inputAuthorities) {
         //권한 가져오기
         String authorities = inputAuthorities.stream()
                 .map(GrantedAuthority::getAuthority)
@@ -74,13 +84,13 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        return UserResponseDTO.TokenInfo.builder()
+        return new TokenResponse(TokenInfo.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpirationTime(ACCESS_TOKEN_EXPIRE_TIME)
                 .refreshToken(refreshToken)
                 .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
-                .build();
+                .build());
     }
 
     //JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
