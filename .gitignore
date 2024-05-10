@@ -40,4 +40,4 @@ out/
 heroglass.mv.db
 application.yaml
 application-local.yaml
-application-local.yaml
+application.properties
