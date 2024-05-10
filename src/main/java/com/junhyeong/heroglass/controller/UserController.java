@@ -2,6 +2,7 @@ package com.junhyeong.heroglass.controller;
 
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
+import com.junhyeong.heroglass.entity.TokenInfo;
 import com.junhyeong.heroglass.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
