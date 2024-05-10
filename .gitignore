@@ -37,6 +37,7 @@ out/
 .vscode/
 
 
+heroglass.mv.db
 application.yaml
-application.local.yaml
-application.properties
+application-local.yaml
+application-local.yaml

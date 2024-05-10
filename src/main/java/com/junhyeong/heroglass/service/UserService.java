@@ -57,8 +57,6 @@ public class UserService {
 
             TokenResponse tokenResponse = jwtTokenProvider.generateToken(signinRequest.email(),
                     Collections.singleton(findUser.getUserRole()));
-            log.info(findUser.getEmail());
-            log.info(findUser.getPassword());
 
             findUser.update(tokenResponse.tokenInfo().getAccessToken(), tokenResponse.tokenInfo().getRefreshToken());
 
