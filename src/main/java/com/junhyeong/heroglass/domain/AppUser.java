@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.EnableMBeanExport;
 
 @Entity
 @Data
@@ -27,6 +28,9 @@ public class AppUser {
     private UserRole userRole;
     private String accessToken;
     private String refreshToken;
+
+    @Embedded
+    private Address address;
 
 
     public AppUser(String name, String email, String encode, UserRole role) {
