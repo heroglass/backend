@@ -1,6 +1,7 @@
 package com.junhyeong.heroglass.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -9,6 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.EnableMBeanExport;
@@ -31,6 +35,11 @@ public class AppUser {
 
     @Embedded
     private Address address;
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member") // Order 테이블에 있는 member에 의해 매핑된 거울일 뿐!
+    private List<Order> orders = new ArrayList<>();
 
 
     public AppUser(String name, String email, String encode, UserRole role) {
