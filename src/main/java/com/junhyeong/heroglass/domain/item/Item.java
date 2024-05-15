@@ -36,6 +36,7 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<CategoryItem> categoryItems = new ArrayList<>();
 
+
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }
