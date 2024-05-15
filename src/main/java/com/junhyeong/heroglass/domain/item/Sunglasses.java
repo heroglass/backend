@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@DiscriminatorValue("S")
+@DiscriminatorValue("SUNGLASSES")
 public class Sunglasses extends Item {
 
     private String etc;

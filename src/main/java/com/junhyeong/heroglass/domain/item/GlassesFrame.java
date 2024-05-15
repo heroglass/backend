@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@DiscriminatorValue("GF")
+@DiscriminatorValue("GLASSES_FRAME")
 public class GlassesFrame extends Item {
 
     private String etc;
