@@ -10,6 +10,7 @@ import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -89,7 +90,8 @@ public class WebSecurityConfigure {
                                 .requestMatchers("/*").permitAll()
                                 .requestMatchers("/metrics/*").permitAll()
                                 .requestMatchers("/actuator/*").permitAll()
-                                .requestMatchers("/h2-console/*").permitAll()
+                                .requestMatchers("/h2-console").permitAll()
+                                .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers("/api/v1/signin").permitAll()
                                 .requestMatchers("/api/v1/signup").permitAll()
                                 .anyRequest().authenticated()

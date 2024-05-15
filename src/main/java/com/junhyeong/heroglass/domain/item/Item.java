@@ -17,11 +17,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 상속 관계 매핑 -> 한 테이블에 모두 넣는 방식
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter
 @Setter
-public class Item {
+public abstract class Item {
 
     @Id
     @GeneratedValue
