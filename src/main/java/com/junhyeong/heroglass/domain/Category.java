@@ -8,8 +8,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +31,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<CategoryItem> categoryItems;
 
-
+    public Category(String name, Category parent) {
+        this.name = name;
+        this.parent = parent;
+    }
 }

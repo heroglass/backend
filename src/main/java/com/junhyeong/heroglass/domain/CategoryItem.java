@@ -25,4 +25,8 @@ public class CategoryItem {
     private Item item;
 
 
+    public CategoryItem(Category category, Item item) {
+        this.category = category;
+        this.item = item;
+    }
 }
