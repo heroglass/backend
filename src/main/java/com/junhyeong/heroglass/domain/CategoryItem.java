@@ -10,7 +10,11 @@ import jakarta.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class CategoryItem {
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
