@@ -38,7 +38,7 @@ public class AppUser {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member") // Order 테이블에 있는 member에 의해 매핑된 거울일 뿐!
+    @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
 

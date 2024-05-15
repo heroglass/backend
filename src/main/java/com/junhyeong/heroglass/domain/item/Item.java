@@ -1,17 +1,18 @@
 package com.junhyeong.heroglass.domain.item;
 
+
+import com.junhyeong.heroglass.domain.CategoryItem;
 import com.junhyeong.heroglass.exception.NotEnoughStockException;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
-import lombok.AccessLevel;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,8 +33,8 @@ public class Item {
     private int price;
     private int stockQuantity;
 
-    @ManyToMany(mappedBy = "items")
-    private List<Category> categories = new ArrayList<>();
+    @OneToMany(mappedBy = "item")
+    private List<CategoryItem> categoryItems = new ArrayList<>();
 
     public void addStock(int quantity) {
         this.stockQuantity += quantity;

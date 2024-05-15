@@ -40,7 +40,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private AppUser user;
 
-    @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
