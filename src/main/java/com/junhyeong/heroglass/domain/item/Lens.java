@@ -2,6 +2,7 @@ package com.junhyeong.heroglass.domain.item;
 
 import com.junhyeong.heroglass.domain.item.types.GlassesFrameType;
 import com.junhyeong.heroglass.domain.item.types.LensType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,6 +12,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
+@DiscriminatorValue("L")
 public class Lens {
     @Id
     @GeneratedValue
