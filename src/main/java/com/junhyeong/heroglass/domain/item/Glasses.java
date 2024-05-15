@@ -11,6 +11,4 @@ import lombok.Getter;
 @DiscriminatorValue("GLASSES")
 public class Glasses extends Item {
     private String etc;
-
-
 }
