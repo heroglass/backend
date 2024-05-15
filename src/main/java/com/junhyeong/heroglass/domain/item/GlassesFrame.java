@@ -1,7 +1,6 @@
 package com.junhyeong.heroglass.domain.item;
 
-import com.junhyeong.heroglass.domain.item.types.GlassesFrameType;
-import com.junhyeong.heroglass.domain.item.types.GlassesType;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,13 +12,9 @@ import lombok.Getter;
 @Entity
 @Getter
 @DiscriminatorValue("GF")
-public class GlassesFrame {
+public class GlassesFrame extends Item {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    private String etc;
 
-    @Enumerated(EnumType.STRING)
-    private GlassesFrameType type;
 
 }
