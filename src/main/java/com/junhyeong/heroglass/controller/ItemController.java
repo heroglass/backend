@@ -18,7 +18,6 @@ public class ItemController {
 
     @PostMapping("/glassesFrame")
     public ResponseEntity<String> createGlassesFrame(@RequestBody ItemRequest itemRequest) {
-
         itemService.saveGlassesFrame(itemRequest);
         return ResponseEntity.ok("GlassesFrame saved successfully");
     }
@@ -26,16 +25,20 @@ public class ItemController {
 
     @PostMapping("/glasses")
     public ResponseEntity<String> createGlasses(@RequestBody ItemRequest itemRequest) {
-
         itemService.saveGlasses(itemRequest);
         return ResponseEntity.ok("Glasses saved successfully");
     }
 
     @PostMapping("/lens")
     public ResponseEntity<String> createLens(@RequestBody ItemRequest itemRequest) {
-
         itemService.saveLens(itemRequest);
         return ResponseEntity.ok("Lens saved successfully");
+    }
+
+    @PostMapping("/sunglasses")
+    public ResponseEntity<String> createSunglasses(@RequestBody ItemRequest itemRequest) {
+        itemService.saveSunglasses(itemRequest);
+        return ResponseEntity.ok("Sunglasses saved successfully");
     }
 
 
