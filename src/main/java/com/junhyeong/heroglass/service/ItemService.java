@@ -2,6 +2,7 @@ package com.junhyeong.heroglass.service;
 
 import com.junhyeong.heroglass.domain.Category;
 import com.junhyeong.heroglass.domain.CategoryItem;
+import com.junhyeong.heroglass.domain.item.Glasses;
 import com.junhyeong.heroglass.domain.item.GlassesFrame;
 import com.junhyeong.heroglass.dto.ItemRequest;
 import com.junhyeong.heroglass.repository.CategoryRepository;
@@ -30,4 +31,20 @@ public class ItemService {
 
         itemRepository.save(glassesFrame);
     }
+
+    public void saveGlasses(ItemRequest itemRequest) {
+
+        Glasses glasses = new Glasses();
+        Category category = categoryRepository.findByName(itemRequest.categoryName());
+
+        glasses.setName(itemRequest.name());
+        glasses.setPrice(itemRequest.price());
+        glasses.setStockQuantity(itemRequest.stockQuantity());
+        CategoryItem categoryItem = new CategoryItem(category, glasses);
+        glasses.getCategoryItems().add(categoryItem);
+
+        itemRepository.save(glasses);
+    }
+
+
 }

@@ -33,10 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // 로그인과 회원가입 요청 시 JWT 검증을 건너뜁니다.
-        if ("/api/v1/signin".equals(requestURI) || "/api/v1/signup".equals(requestURI) || "/h2-console/".equals((requestURI))) {
+        if ("/api/v1/signin".equals(requestURI) || "/api/v1/signup".equals(requestURI) || "/h2-console/".equals(
+                (requestURI))) {
             chain.doFilter(request, response);
-            System.out.println("pass!!!");
-
             return;
         }
 

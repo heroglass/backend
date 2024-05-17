@@ -18,7 +18,6 @@ public class ItemController {
 
     @PostMapping("/glassesFrame")
     public ResponseEntity<String> createGlassesFrame(@RequestBody ItemRequest itemRequest) {
-        System.out.println(itemRequest.name() + " " + itemRequest.price() + " " + itemRequest.stockQuantity());
 
         itemService.saveGlassesFrame(itemRequest);
         return ResponseEntity.ok("GlassesFrame saved successfully");
@@ -27,9 +26,8 @@ public class ItemController {
 
     @PostMapping("/glasses")
     public ResponseEntity<String> createGlasses(@RequestBody ItemRequest itemRequest) {
-        System.out.println(itemRequest.name() + " " + itemRequest.price() + " " + itemRequest.stockQuantity());
 
-        itemService.saveGlassesFrame(itemRequest);
+        itemService.saveGlasses(itemRequest);
         return ResponseEntity.ok("Glasses saved successfully");
     }
 
