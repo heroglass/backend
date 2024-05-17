@@ -1,8 +1,8 @@
 package com.junhyeong.heroglass.domain.item;
 
-
 import com.junhyeong.heroglass.domain.CategoryItem;
 import com.junhyeong.heroglass.exception.NotEnoughStockException;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -33,7 +33,7 @@ public abstract class Item {
     private int price;
     private int stockQuantity;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item",cascade = CascadeType.PERSIST)
     private List<CategoryItem> categoryItems = new ArrayList<>();
 
 
@@ -49,4 +49,5 @@ public abstract class Item {
 
         this.stockQuantity = restStock;
     }
+
 }

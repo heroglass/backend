@@ -9,8 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class CategoryItem {
     @Id
     @GeneratedValue
@@ -28,5 +30,7 @@ public class CategoryItem {
     public CategoryItem(Category category, Item item) {
         this.category = category;
         this.item = item;
+        this.item.getCategoryItems().add(this);
     }
+
 }
