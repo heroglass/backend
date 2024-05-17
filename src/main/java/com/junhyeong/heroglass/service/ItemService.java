@@ -4,16 +4,20 @@ import com.junhyeong.heroglass.domain.Category;
 import com.junhyeong.heroglass.domain.CategoryItem;
 import com.junhyeong.heroglass.domain.item.Glasses;
 import com.junhyeong.heroglass.domain.item.GlassesFrame;
+import com.junhyeong.heroglass.domain.item.Item;
 import com.junhyeong.heroglass.domain.item.Lens;
 import com.junhyeong.heroglass.domain.item.Sunglasses;
 import com.junhyeong.heroglass.dto.ItemRequest;
 import com.junhyeong.heroglass.dto.ItemResponse;
 import com.junhyeong.heroglass.repository.CategoryRepository;
 import com.junhyeong.heroglass.repository.ItemRepository;
+import com.junhyeong.heroglass.repository.querydsl.ItemRepositoryCustom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -85,5 +89,11 @@ public class ItemService {
         return itemRepository.findByCategory(category).stream().map((item) -> {
             return new ItemResponse(item.getId(), item.getName(), item.getPrice(), item.getStockQuantity());
         }).collect(Collectors.toList());
+    }
+
+    public ItemResponse findById(Long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Item not found with id:" + id));
+        return new ItemResponse(item.getId(), item.getName(), item.getPrice(), item.getStockQuantity());
     }
 }

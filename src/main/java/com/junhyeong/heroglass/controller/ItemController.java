@@ -46,10 +46,14 @@ public class ItemController {
     }
 
 
-    @GetMapping("/{category}")
+    @GetMapping("/category/{category}")
     public ResponseEntity<List<ItemResponse>> getItemsWithCategory(@PathVariable("category") String category) {
         return ResponseEntity.ok(itemService.findByCategory(category));
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<ItemResponse> getItem(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(itemService.findById(id));
+    }
 
 }

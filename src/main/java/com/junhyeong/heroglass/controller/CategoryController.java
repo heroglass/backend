@@ -24,7 +24,6 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
         CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
         return ResponseEntity.ok(categoryResponse);
-
     }
 
 
