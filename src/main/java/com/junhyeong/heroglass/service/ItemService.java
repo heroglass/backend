@@ -3,9 +3,7 @@ package com.junhyeong.heroglass.service;
 import com.junhyeong.heroglass.domain.Category;
 import com.junhyeong.heroglass.domain.CategoryItem;
 import com.junhyeong.heroglass.domain.item.GlassesFrame;
-import com.junhyeong.heroglass.domain.item.Item;
-import com.junhyeong.heroglass.dto.GlassesFrameRequest;
-import com.junhyeong.heroglass.repository.CategoryItemRepository;
+import com.junhyeong.heroglass.dto.ItemRequest;
 import com.junhyeong.heroglass.repository.CategoryRepository;
 import com.junhyeong.heroglass.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,7 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public void saveGlassesFrame(GlassesFrameRequest glassesFrameRequest) {
+    public void saveGlassesFrame(ItemRequest glassesFrameRequest) {
 
         GlassesFrame glassesFrame = new GlassesFrame();
         Category category = categoryRepository.findByName(glassesFrameRequest.categoryName());

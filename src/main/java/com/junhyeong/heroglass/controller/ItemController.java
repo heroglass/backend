@@ -1,10 +1,7 @@
 package com.junhyeong.heroglass.controller;
 
-import com.junhyeong.heroglass.domain.item.GlassesFrame;
-import com.junhyeong.heroglass.dto.CategoryResponse;
-import com.junhyeong.heroglass.dto.GlassesFrameRequest;
+import com.junhyeong.heroglass.dto.ItemRequest;
 import com.junhyeong.heroglass.service.ItemService;
-import java.net.http.HttpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +17,20 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping("/glassesFrame")
-    public ResponseEntity<String> createGlassesFrame(@RequestBody GlassesFrameRequest glassesFrameRequest) {
-        System.out.println(glassesFrameRequest.name()+" " +glassesFrameRequest.price()+" " + glassesFrameRequest.stockQuantity());
+    public ResponseEntity<String> createGlassesFrame(@RequestBody ItemRequest itemRequest) {
+        System.out.println(itemRequest.name() + " " + itemRequest.price() + " " + itemRequest.stockQuantity());
 
-        itemService.saveGlassesFrame(glassesFrameRequest);
+        itemService.saveGlassesFrame(itemRequest);
         return ResponseEntity.ok("GlassesFrame saved successfully");
+    }
+
+
+    @PostMapping("/glasses")
+    public ResponseEntity<String> createGlasses(@RequestBody ItemRequest itemRequest) {
+        System.out.println(itemRequest.name() + " " + itemRequest.price() + " " + itemRequest.stockQuantity());
+
+        itemService.saveGlassesFrame(itemRequest);
+        return ResponseEntity.ok("Glasses saved successfully");
     }
 
 
