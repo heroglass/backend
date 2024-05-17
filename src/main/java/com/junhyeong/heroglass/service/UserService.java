@@ -6,6 +6,7 @@ import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
 import com.junhyeong.heroglass.dto.SignupRequest;
 import com.junhyeong.heroglass.dto.TokenResponse;
+import com.junhyeong.heroglass.dto.UserResponse;
 import com.junhyeong.heroglass.exception.CustomException;
 import com.junhyeong.heroglass.jwt.JwtTokenProvider;
 import com.junhyeong.heroglass.repository.UserRepository;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import java.security.Key;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,6 +83,14 @@ public class UserService {
 
     public AppUser loadUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public UserResponse findById(Long id) {
+        AppUser user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id:" + id));
+
+        return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getAddress(),
+                user.getUserRole(), user.getOrders());
     }
 }
 
