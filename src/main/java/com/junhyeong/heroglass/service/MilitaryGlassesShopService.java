@@ -7,27 +7,38 @@ import com.junhyeong.heroglass.repository.MilitaryGlassesShopRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MilitaryGlassesShopService {
-    @Autowired
-    private MilitaryGlassesShopRepository militaryGlassesShopRepository;
+
+    private final MilitaryGlassesShopRepository militaryGlassesShopRepository;
+    private final GeocodingService geocodingService;
 
     @Transactional
     public void saveAll(List<ShopRequest> shopRequests) {
         List<MilitaryGlassesShop> militaryGlassesShops = shopRequests.stream()
-                .map(request -> new MilitaryGlassesShop(
-                        request.rowno(),
-                        request.shop(),
-                        request.city(),
-                        request.district(),
-                        request.telno(),
-                        request.postno(),
-                        request.address(),
-                        request.addressdetail()
-                ))
+                .map(request -> {
+                    try {
+                        return new MilitaryGlassesShop(
+                                request.rowno(),
+                                request.shop(),
+                                request.city(),
+                                request.district(),
+                                request.telno(),
+                                request.postno(),
+                                request.address(),
+                                request.addressdetail(),
+                                geocodingService.getAddressCoordinates(request.address() + " " + request.addressdetail())
+
+                        );
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
         militaryGlassesShopRepository.saveAll(militaryGlassesShops);
     }

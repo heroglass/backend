@@ -1,5 +1,6 @@
 package com.junhyeong.heroglass.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,8 +26,11 @@ public class MilitaryGlassesShop {
     private String address;
     private String addressdetail;
 
+    @Embedded
+    private Location location;
+
     public MilitaryGlassesShop(String rowno, String shop, String city, String district, String telno, String postno,
-                               String address, String addressdetail) {
+                               String address, String addressDetail, Location location) {
         this.rowno = rowno;
         this.shop = shop;
         this.city = city;
@@ -34,6 +38,7 @@ public class MilitaryGlassesShop {
         this.telno = telno;
         this.postno = postno;
         this.address = address;
-        this.addressdetail = addressdetail;
+        this.addressdetail = addressDetail;
+        this.location = location;
     }
 }
