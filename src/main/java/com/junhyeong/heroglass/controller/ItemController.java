@@ -31,5 +31,12 @@ public class ItemController {
         return ResponseEntity.ok("Glasses saved successfully");
     }
 
+    @PostMapping("/lens")
+    public ResponseEntity<String> createLens(@RequestBody ItemRequest itemRequest) {
+
+        itemService.saveLens(itemRequest);
+        return ResponseEntity.ok("Lens saved successfully");
+    }
+
 
 }

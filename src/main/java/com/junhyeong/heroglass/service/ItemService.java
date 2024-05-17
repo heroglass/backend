@@ -4,6 +4,7 @@ import com.junhyeong.heroglass.domain.Category;
 import com.junhyeong.heroglass.domain.CategoryItem;
 import com.junhyeong.heroglass.domain.item.Glasses;
 import com.junhyeong.heroglass.domain.item.GlassesFrame;
+import com.junhyeong.heroglass.domain.item.Lens;
 import com.junhyeong.heroglass.dto.ItemRequest;
 import com.junhyeong.heroglass.repository.CategoryRepository;
 import com.junhyeong.heroglass.repository.ItemRepository;
@@ -47,4 +48,16 @@ public class ItemService {
     }
 
 
+    public void saveLens(ItemRequest itemRequest) {
+        Lens lens = new Lens();
+        Category category = categoryRepository.findByName(itemRequest.categoryName());
+
+        lens.setName(itemRequest.name());
+        lens.setPrice(itemRequest.price());
+        lens.setStockQuantity(itemRequest.stockQuantity());
+        CategoryItem categoryItem = new CategoryItem(category, lens);
+        lens.getCategoryItems().add(categoryItem);
+
+        itemRepository.save(lens);
+    }
 }
