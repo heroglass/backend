@@ -28,12 +28,12 @@ public abstract class Item {
     @Column(name = "item_id")
     private Long id;
 
-
     private String name;
     private int price;
     private int stockQuantity;
 
-    @OneToMany(mappedBy = "item",cascade = CascadeType.PERSIST)
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<CategoryItem> categoryItems = new ArrayList<>();
 
 

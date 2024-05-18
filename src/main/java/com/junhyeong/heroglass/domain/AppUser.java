@@ -33,14 +33,14 @@ public class AppUser {
     private String accessToken;
     private String refreshToken;
 
+    private double vision;
+
     @Embedded
     private Address address;
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
-
 
     public AppUser(String name, String email, String encode, UserRole role) {
         this.username = name;
@@ -53,6 +53,7 @@ public class AppUser {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
+
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
