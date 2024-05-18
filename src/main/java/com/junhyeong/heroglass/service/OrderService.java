@@ -126,17 +126,12 @@ public class OrderService {
 
         Order order = orderRepository.findbyOrderUuid(verificationRequest.orderUuid());
 
-        if (orderAmount == order.getTotalPrice()) {
-            order.setStatus(OrderStatus.ORDER_COMPLETE_PAYMENT);
-            return new VerificationResponse("검증 성공", order.getOrderUuid(), orderAmount, order.getTotalPrice());
-        }
-
         if (orderAmount != order.getTotalPrice()) {
             order.setStatus(OrderStatus.ORDER_PAYMENT_FAIL);
             return new VerificationResponse("검증 실패", order.getOrderUuid(), orderAmount, order.getTotalPrice());
         }
-
-
+        order.setStatus(OrderStatus.ORDER_COMPLETE_PAYMENT);
+        return new VerificationResponse("검증 성공", order.getOrderUuid(), orderAmount, order.getTotalPrice());
     }
 
     private int getPaymentInfo(String imp_uid) throws JsonProcessingException {
