@@ -1,5 +1,7 @@
 package com.junhyeong.heroglass.controller;
 
+import com.junhyeong.heroglass.dto.AddressRequest;
+import com.junhyeong.heroglass.dto.AddressResponse;
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
 import com.junhyeong.heroglass.dto.SignupRequest;
@@ -54,4 +56,9 @@ public class UserController {
         return ResponseEntity.ok(userService.updateVision(id, visionRequest));
     }
 
+    @PutMapping("/address/{id}")
+    public ResponseEntity<AddressResponse> updateAddress(@PathVariable("id") Long id,
+                                                         @RequestBody AddressRequest addressRequest) {
+        return ResponseEntity.ok(userService.updateAddress(id, addressRequest));
+    }
 }

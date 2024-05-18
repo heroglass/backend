@@ -53,6 +53,10 @@ public class AppUser {
         this.vision = vision;
     }
 
+    public void updateAddress(Address address) {
+        this.address = address;
+    }
+
     public void updateToken(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;

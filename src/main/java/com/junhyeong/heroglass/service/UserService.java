@@ -1,7 +1,10 @@
 package com.junhyeong.heroglass.service;
 
+import com.junhyeong.heroglass.domain.Address;
 import com.junhyeong.heroglass.domain.AppUser;
 import com.junhyeong.heroglass.domain.Vision;
+import com.junhyeong.heroglass.dto.AddressRequest;
+import com.junhyeong.heroglass.dto.AddressResponse;
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
 import com.junhyeong.heroglass.dto.SignupRequest;
@@ -101,6 +104,16 @@ public class UserService {
         user.updateVision(new Vision(visionRequest.leftEye(), visionRequest.rightEye()));
 
         return new VisionResponse(user.getId(), user.getUsername(), user.getVision());
+    }
+
+    @Transactional
+    public AddressResponse updateAddress(Long id, AddressRequest addressRequest) {
+        AppUser user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id:" + id));
+        Address address = new Address(addressRequest.address(), addressRequest.detail());
+        user.updateAddress(address);
+
+        return new AddressResponse(user.getId(), user.getUsername(), address.getAddress(), address.getDetail());
     }
 
 }
