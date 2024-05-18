@@ -1,4 +1,4 @@
 package com.junhyeong.heroglass.dto;
 
-public record PrepareOrderResponse(String orderUid, int amount) {
+public record PrepareOrderResponse(String orderUuid, int amount) {
 }

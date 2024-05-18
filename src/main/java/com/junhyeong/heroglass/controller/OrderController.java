@@ -5,6 +5,8 @@ import com.junhyeong.heroglass.dto.OrderRequest;
 import com.junhyeong.heroglass.dto.OrderResponse;
 import com.junhyeong.heroglass.dto.PrepareOrderRequest;
 import com.junhyeong.heroglass.dto.PrepareOrderResponse;
+import com.junhyeong.heroglass.dto.VerificationRequest;
+import com.junhyeong.heroglass.dto.VerificationResponse;
 import com.junhyeong.heroglass.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,12 @@ public class OrderController {
     public OrderResponse createOrder(@RequestBody OrderRequest orderRequest)
             throws JsonProcessingException {
         return orderService.createOrder(orderRequest);
+    }
+
+    @PostMapping("/order/verification")
+    public VerificationResponse verification(@RequestBody VerificationRequest verificationRequest)
+            throws JsonProcessingException {
+        return orderService.verification(verificationRequest);
     }
 
 

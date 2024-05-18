@@ -1,15 +1,19 @@
 package com.junhyeong.heroglass.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.junhyeong.heroglass.domain.AppUser;
 import com.junhyeong.heroglass.domain.Delivery;
 import com.junhyeong.heroglass.domain.Order;
 import com.junhyeong.heroglass.domain.OrderItem;
+import com.junhyeong.heroglass.domain.OrderStatus;
 import com.junhyeong.heroglass.domain.item.Item;
 import com.junhyeong.heroglass.dto.OrderRequest;
 import com.junhyeong.heroglass.dto.OrderResponse;
 import com.junhyeong.heroglass.dto.PrepareOrderResponse;
+import com.junhyeong.heroglass.dto.VerificationRequest;
+import com.junhyeong.heroglass.dto.VerificationResponse;
 import com.junhyeong.heroglass.repository.ItemRepository;
 import com.junhyeong.heroglass.repository.OrderRepository;
 import com.junhyeong.heroglass.repository.UserRepository;
@@ -116,5 +120,47 @@ public class OrderService {
                 orderItem.getCount());
     }
 
+
+    public VerificationResponse verification(VerificationRequest verificationRequest) throws JsonProcessingException {
+        int orderAmount = getPaymentInfo(verificationRequest.imp_uid());
+
+        Order order = orderRepository.findbyOrderUuid(verificationRequest.orderUuid());
+
+        if (orderAmount == order.getTotalPrice()) {
+            order.setStatus(OrderStatus.ORDER_COMPLETE_PAYMENT);
+            return new VerificationResponse("검증 성공", order.getOrderUuid(), orderAmount, order.getTotalPrice());
+        }
+
+        if (orderAmount != order.getTotalPrice()) {
+            order.setStatus(OrderStatus.ORDER_PAYMENT_FAIL);
+            return new VerificationResponse("검증 실패", order.getOrderUuid(), orderAmount, order.getTotalPrice());
+        }
+
+
+    }
+
+    private int getPaymentInfo(String imp_uid) throws JsonProcessingException {
+        String url = "https://api.iamport.kr/payments/" + imp_uid;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBasicAuth(api_key, api_secret); // Encode key and secret for basic auth
+        headers.setBearerAuth(getPortOneToken());
+
+        // Create a GET request entity
+        HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+
+        // Send GET request
+        ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+                String.class);
+
+        JsonNode rootNode = objectMapper.readTree(responseEntity.getBody());
+        JsonNode responseNode = rootNode.path("response");
+        int amount = responseNode.path("amount").asInt();
+
+        return amount;
+
+
+    }
 
 }
