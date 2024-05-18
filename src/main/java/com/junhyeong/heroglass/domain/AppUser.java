@@ -2,8 +2,6 @@ package com.junhyeong.heroglass.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -11,14 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 public class AppUser {
 
@@ -33,7 +32,8 @@ public class AppUser {
     private String accessToken;
     private String refreshToken;
 
-    private double vision;
+    @Embedded
+    private Vision vision;
 
     @Embedded
     private Address address;
@@ -49,11 +49,14 @@ public class AppUser {
         this.userRole = role;
     }
 
-    public void update(String accessToken, String refreshToken) {
+    public void updateVision(Vision vision) {
+        this.vision = vision;
+    }
+
+    public void updateToken(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
-
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;

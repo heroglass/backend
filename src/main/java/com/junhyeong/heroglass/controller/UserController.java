@@ -1,12 +1,11 @@
 package com.junhyeong.heroglass.controller;
 
-import com.junhyeong.heroglass.dto.ItemResponse;
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
-import com.junhyeong.heroglass.domain.TokenInfo;
 import com.junhyeong.heroglass.dto.SignupRequest;
-import com.junhyeong.heroglass.dto.TokenResponse;
 import com.junhyeong.heroglass.dto.UserResponse;
+import com.junhyeong.heroglass.dto.VisionRequest;
+import com.junhyeong.heroglass.dto.VisionResponse;
 import com.junhyeong.heroglass.exception.CustomException;
 import com.junhyeong.heroglass.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +46,12 @@ public class UserController {
     @GetMapping("/info/{id}")
     public ResponseEntity<UserResponse> getInfo(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.findById(id));
+    }
+
+    @PutMapping("/vision/{id}")
+    public ResponseEntity<VisionResponse> updateVision(@PathVariable("id") Long id,
+                                                       @RequestBody VisionRequest visionRequest) {
+        return ResponseEntity.ok(userService.updateVision(id, visionRequest));
     }
 
 }

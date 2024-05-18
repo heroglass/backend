@@ -1,18 +1,19 @@
 package com.junhyeong.heroglass.service;
 
 import com.junhyeong.heroglass.domain.AppUser;
-import com.junhyeong.heroglass.domain.TokenInfo;
+import com.junhyeong.heroglass.domain.Vision;
 import com.junhyeong.heroglass.dto.SigninRequest;
 import com.junhyeong.heroglass.dto.SigninResponse;
 import com.junhyeong.heroglass.dto.SignupRequest;
 import com.junhyeong.heroglass.dto.TokenResponse;
 import com.junhyeong.heroglass.dto.UserResponse;
+import com.junhyeong.heroglass.dto.VisionRequest;
+import com.junhyeong.heroglass.dto.VisionResponse;
 import com.junhyeong.heroglass.exception.CustomException;
 import com.junhyeong.heroglass.jwt.JwtTokenProvider;
 import com.junhyeong.heroglass.repository.UserRepository;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import java.security.Key;
 import java.util.Collections;
@@ -21,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -60,7 +60,8 @@ public class UserService {
             TokenResponse tokenResponse = jwtTokenProvider.generateToken(signinRequest.email(),
                     Collections.singleton(findUser.getUserRole()));
 
-            findUser.update(tokenResponse.tokenInfo().getAccessToken(), tokenResponse.tokenInfo().getRefreshToken());
+            findUser.updateToken(tokenResponse.tokenInfo().getAccessToken(),
+                    tokenResponse.tokenInfo().getRefreshToken());
 
             return new SigninResponse(findUser.getId(), tokenResponse.tokenInfo());
 
@@ -92,5 +93,15 @@ public class UserService {
         return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getAddress(),
                 user.getUserRole(), user.getOrders());
     }
+
+    @Transactional
+    public VisionResponse updateVision(Long id, VisionRequest visionRequest) {
+        AppUser user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id:" + id));
+        user.updateVision(new Vision(visionRequest.leftEye(), visionRequest.rightEye()));
+
+        return new VisionResponse(user.getId(), user.getUsername(), user.getVision());
+    }
+
 }
 
