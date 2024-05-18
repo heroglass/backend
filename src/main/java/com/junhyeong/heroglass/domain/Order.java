@@ -13,10 +13,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +42,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private AppUser user;
 
-    @OneToMany(mappedBy="order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
@@ -51,6 +53,13 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    private String orderUuid;
+
+
+    @PrePersist
+    public void generateOrderUuid() {
+        this.orderUuid = UUID.randomUUID().toString();
+    }
 
     public void setUser(AppUser user) {
         this.user = user;

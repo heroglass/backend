@@ -2,6 +2,7 @@ package com.junhyeong.heroglass.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.junhyeong.heroglass.dto.OrderRequest;
+import com.junhyeong.heroglass.dto.OrderResponse;
 import com.junhyeong.heroglass.dto.PrepareOrderRequest;
 import com.junhyeong.heroglass.dto.PrepareOrderResponse;
 import com.junhyeong.heroglass.service.OrderService;
@@ -22,17 +23,17 @@ public class OrderController {
 
     private final OrderService orderService;
 
+//    @PostMapping("/order/prepare/{id}")
+//    public ResponseEntity<PrepareOrderResponse> prepareOrder(@PathVariable("id") Long id,
+//                                                             @RequestBody PrepareOrderRequest prepareOrderRequest)
+//            throws JsonProcessingException {
+//        return ResponseEntity.ok(orderService.prepareOrder(id, prepareOrderRequest));
+//    }
 
-    @PostMapping("/order/prepare/{id}")
-    public ResponseEntity<PrepareOrderResponse> prepareOrder(@PathVariable("id") Long id,
-                                                             @RequestBody PrepareOrderRequest prepareOrderRequest)
+    @PostMapping("/order")
+    public OrderResponse createOrder(@RequestBody OrderRequest orderRequest)
             throws JsonProcessingException {
-        return ResponseEntity.ok(orderService.prepareOrder(id, prepareOrderRequest));
-    }
-
-    @PostMapping("/order/{id}")
-    public void createOrder(@PathVariable("id") Long id, @RequestBody OrderRequest orderRequest) {
-        orderService.createOrder();
+        return orderService.createOrder(orderRequest);
     }
 
 

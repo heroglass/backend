@@ -1,4 +1,6 @@
 package com.junhyeong.heroglass.dto;
 
-public record OrderResponse() {
+import java.util.UUID;
+
+public record OrderResponse(String orderUUID, String name, int price, int count) {
 }
