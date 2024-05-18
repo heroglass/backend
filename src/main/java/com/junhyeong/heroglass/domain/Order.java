@@ -85,7 +85,7 @@ public class Order {
             order.addOrderItem(orderItem);
         }
 
-        order.setStatus(OrderStatus.ORDER);
+        order.setStatus(OrderStatus.ORDER_BEFORE_PAYMENT);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
