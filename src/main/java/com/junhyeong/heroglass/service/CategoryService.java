@@ -1,9 +1,8 @@
 package com.junhyeong.heroglass.service;
 
 import com.junhyeong.heroglass.domain.Category;
-import com.junhyeong.heroglass.domain.CategoryItem;
-import com.junhyeong.heroglass.dto.CategoryRequest;
-import com.junhyeong.heroglass.dto.CategoryResponse;
+import com.junhyeong.heroglass.domain.dto.request.CategoryRequest;
+import com.junhyeong.heroglass.domain.dto.response.CategoryResponse;
 import com.junhyeong.heroglass.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

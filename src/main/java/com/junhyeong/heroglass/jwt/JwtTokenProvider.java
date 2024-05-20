@@ -2,7 +2,7 @@ package com.junhyeong.heroglass.jwt;
 
 
 import com.junhyeong.heroglass.domain.TokenInfo;
-import com.junhyeong.heroglass.dto.TokenResponse;
+import com.junhyeong.heroglass.domain.dto.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

@@ -1,7 +1,7 @@
 package com.junhyeong.heroglass.controller;
 
-import com.junhyeong.heroglass.dto.ItemRequest;
-import com.junhyeong.heroglass.dto.ItemResponse;
+import com.junhyeong.heroglass.domain.dto.request.ItemRequest;
+import com.junhyeong.heroglass.domain.dto.response.ItemResponse;
 import com.junhyeong.heroglass.service.ItemService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class ItemController {
         return ResponseEntity.ok(itemService.findByCategory(category));
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<ItemResponse> getItem(@PathVariable("id") Long id) {
         return ResponseEntity.ok(itemService.findById(id));
     }

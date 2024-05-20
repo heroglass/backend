@@ -8,17 +8,20 @@ import com.junhyeong.heroglass.domain.Delivery;
 import com.junhyeong.heroglass.domain.Order;
 import com.junhyeong.heroglass.domain.OrderItem;
 import com.junhyeong.heroglass.domain.OrderStatus;
+import com.junhyeong.heroglass.domain.dto.response.OrderItemResponse;
 import com.junhyeong.heroglass.domain.item.Item;
-import com.junhyeong.heroglass.dto.OrderRequest;
-import com.junhyeong.heroglass.dto.OrderResponse;
-import com.junhyeong.heroglass.dto.PrepareOrderResponse;
-import com.junhyeong.heroglass.dto.VerificationRequest;
-import com.junhyeong.heroglass.dto.VerificationResponse;
+import com.junhyeong.heroglass.domain.dto.request.OrderRequest;
+import com.junhyeong.heroglass.domain.dto.response.OrderResponse;
+import com.junhyeong.heroglass.domain.dto.response.PrepareOrderResponse;
+import com.junhyeong.heroglass.domain.dto.request.VerificationRequest;
+import com.junhyeong.heroglass.domain.dto.response.VerificationResponse;
 import com.junhyeong.heroglass.repository.ItemRepository;
 import com.junhyeong.heroglass.repository.OrderRepository;
 import com.junhyeong.heroglass.repository.UserRepository;
 import com.siot.IamportRestClient.IamportClient;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -92,31 +95,30 @@ public class OrderService {
         return new PrepareOrderResponse(merchantUid, amount);
     }
 
-    public OrderResponse createOrder(OrderRequest orderRequest)
+    public OrderResponse createOrder(Long userId, OrderRequest orderRequest)
             throws JsonProcessingException {
 
-        AppUser user = userRepository.findById(orderRequest.userId())
-                .orElseThrow(() -> new NoSuchElementException("User not found with id:" + orderRequest.userId()));
-
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id:" + userId));
         Item item = itemRepository.findById(orderRequest.itemId())
                 .orElseThrow(() -> new NoSuchElementException("Item not found with id:" + orderRequest.itemId()));
-
         // 배송정보 생성
         Delivery delivery = new Delivery();
         delivery.setAddress(user.getAddress());
-
         // 주문 상품 생성
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), orderRequest.count());
-
         // 주문 생성
         Order order = Order.createOrder(user, delivery, orderItem);
-
         prepareOrder(order.getOrderUuid(), order.getTotalPrice());
+
+        List<OrderItemResponse> orderItemResponses = order.getOrderItems().stream()
+                .map(this::convertToOrderItemDTO)
+                .collect(Collectors.toList());
 
         // 주문 저장
         orderRepository.save(order);
 
-        return new OrderResponse(order.getOrderUuid(), item.getName(), order.getTotalPrice(),
+        return new OrderResponse(order.getOrderUuid(), orderItemResponses, order.getTotalPrice(),
                 orderItem.getCount());
     }
 
@@ -124,7 +126,7 @@ public class OrderService {
     public VerificationResponse verification(VerificationRequest verificationRequest) throws JsonProcessingException {
         int orderAmount = getPaymentInfo(verificationRequest.imp_uid());
 
-        Order order = orderRepository.findbyOrderUuid(verificationRequest.orderUuid());
+        Order order = orderRepository.findByOrderUuid(verificationRequest.orderUuid());
 
         if (orderAmount != order.getTotalPrice()) {
             order.setStatus(OrderStatus.ORDER_PAYMENT_FAIL);
@@ -157,5 +159,32 @@ public class OrderService {
 
 
     }
+
+    public List<OrderResponse> getOrders(Long id) {
+
+        List<Order> orders = orderRepository.findByUserId(id).stream().toList();
+
+        return orders.stream()
+                .map(this::convertToOrderResponse)
+                .collect(Collectors.toList());
+
+    }
+
+    private OrderResponse convertToOrderResponse(Order order) {
+        List<OrderItemResponse> orderItemResponses = order.getOrderItems().stream()
+                .map(this::convertToOrderItemDTO)
+                .collect(Collectors.toList());
+
+        return new OrderResponse(order.getOrderUuid(), orderItemResponses,
+                orderItemResponses.stream().mapToInt((orderItemResponse) -> orderItemResponse.count()).sum(),
+                order.getTotalPrice());
+    }
+
+    private OrderItemResponse convertToOrderItemDTO(OrderItem item) {
+        return new OrderItemResponse(item.getItem().getId(), item.getItem().getName(),
+                item.getItem().getStockQuantity(),
+                item.getItem().getPrice(), item.getCount());
+    }
+
 
 }

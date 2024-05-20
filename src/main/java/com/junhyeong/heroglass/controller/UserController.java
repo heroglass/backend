@@ -1,13 +1,13 @@
 package com.junhyeong.heroglass.controller;
 
-import com.junhyeong.heroglass.dto.AddressRequest;
-import com.junhyeong.heroglass.dto.AddressResponse;
-import com.junhyeong.heroglass.dto.SigninRequest;
-import com.junhyeong.heroglass.dto.SigninResponse;
-import com.junhyeong.heroglass.dto.SignupRequest;
-import com.junhyeong.heroglass.dto.UserResponse;
-import com.junhyeong.heroglass.dto.VisionRequest;
-import com.junhyeong.heroglass.dto.VisionResponse;
+import com.junhyeong.heroglass.domain.dto.request.AddressRequest;
+import com.junhyeong.heroglass.domain.dto.response.AddressResponse;
+import com.junhyeong.heroglass.domain.dto.request.SigninRequest;
+import com.junhyeong.heroglass.domain.dto.response.SigninResponse;
+import com.junhyeong.heroglass.domain.dto.request.SignupRequest;
+import com.junhyeong.heroglass.domain.dto.response.UserResponse;
+import com.junhyeong.heroglass.domain.dto.request.VisionRequest;
+import com.junhyeong.heroglass.domain.dto.response.VisionResponse;
 import com.junhyeong.heroglass.exception.CustomException;
 import com.junhyeong.heroglass.service.UserService;
 import lombok.RequiredArgsConstructor;

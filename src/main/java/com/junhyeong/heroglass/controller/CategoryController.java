@@ -1,12 +1,10 @@
 package com.junhyeong.heroglass.controller;
 
-import com.junhyeong.heroglass.domain.Category;
-import com.junhyeong.heroglass.dto.CategoryRequest;
-import com.junhyeong.heroglass.dto.CategoryResponse;
+import com.junhyeong.heroglass.domain.dto.request.CategoryRequest;
+import com.junhyeong.heroglass.domain.dto.response.CategoryResponse;
 import com.junhyeong.heroglass.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

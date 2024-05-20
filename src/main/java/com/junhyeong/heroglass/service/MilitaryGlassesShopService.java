@@ -1,14 +1,13 @@
 package com.junhyeong.heroglass.service;
 
 import com.junhyeong.heroglass.domain.MilitaryGlassesShop;
-import com.junhyeong.heroglass.dto.ShopRequest;
-import com.junhyeong.heroglass.dto.ShopResponse;
+import com.junhyeong.heroglass.domain.dto.request.ShopRequest;
+import com.junhyeong.heroglass.domain.dto.response.ShopResponse;
 import com.junhyeong.heroglass.repository.MilitaryGlassesShopRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

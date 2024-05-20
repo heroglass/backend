@@ -1,4 +1,4 @@
-package com.junhyeong.heroglass.dto;
+package com.junhyeong.heroglass.domain.dto.request;
 
 public record VerificationRequest(String imp_uid, String orderUuid) {
 }
