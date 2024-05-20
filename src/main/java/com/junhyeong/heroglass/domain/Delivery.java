@@ -3,6 +3,7 @@ package com.junhyeong.heroglass.domain;
 import static jakarta.persistence.FetchType.LAZY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -28,8 +29,12 @@ public class Delivery {
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
     private Order order;
 
-    @Embedded
+    @Embeddedz
     private Address address;
+
+    public Address getAddress() {
+        return this.address == null ? new Address() : this.address;
+    }
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
